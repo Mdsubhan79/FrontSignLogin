@@ -34,7 +34,7 @@
     }
   </style>
 </head>
-<body onload="checkAuth(); initGame();">
+<body onload="initGameAfterAuth();">
   <div class="container">
     <h2>Tic Tac Toe - Player vs Computer</h2>
     <div class="board" id="board"></div>
@@ -53,6 +53,12 @@
     let gameOver = false;
     const PLAYER = 'X';
     const COMPUTER = 'O';
+
+    function initGameAfterAuth() {
+  if (checkAuth()) {  // Only initialize if authenticated
+    initGame();
+  }
+}
 
     function initGame() {
       board = Array(9).fill("");
@@ -149,7 +155,7 @@
     // --- Storage + Auth Helpers ---
 
     function getSession() {
-      return localStorage.getItem("loggedInUser");
+      return localStorage.getItem("currentUser");
     }
 
     function checkAuth(redirect = true) {
