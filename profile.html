@@ -3,30 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
+    <title>Your Profile</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>User Profile</h1>
-            <div class="user-info">
-                <span id="profile-username"></span>
-                <a href="index.html" class="back-btn">Back to Game</a>
-                <button id="profile-logout-btn">Logout</button>
-            </div>
-        </header>
-        
-        <div class="profile-container">
-            <h2>Game Statistics</h2>
-            <div class="stats">
-                <p>Wins: <span id="wins-count">0</span></p>
-                <p>Losses: <span id="losses-count">0</span></p>
-            </div>
+        <h1>Your Profile</h1>
+        <div id="profile-info" class="profile-container">
+            <!-- Filled by JavaScript -->
+        </div>
+        <div class="actions">
+            <a href="game.html" class="btn">Play Game</a>
+            <button id="logout-btn" class="btn">Logout</button>
         </div>
     </div>
-
-    <script src="auth.js"></script>
     <script src="profile.js"></script>
 </body>
 </html>

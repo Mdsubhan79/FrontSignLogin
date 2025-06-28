@@ -1,78 +1,58 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if (!currentUser) return;
+    // Get current user
+    const currentUserEmail = localStorage.getItem('currentUser');
+    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const currentUser = users.find(user => user.email === currentUserEmail);
     
-    let targetNumber = Math.floor(Math.random() * 100) + 1;
-    let attempts = 0;
-    const maxAttempts = 10;
+    // Update stats display
+    document.getElementById('wins').textContent = currentUser.wins || 0;
+    document.getElementById('losses').textContent = currentUser.losses || 0;
     
-    const guessInput = document.getElementById('guess-input');
-    const guessBtn = document.getElementById('guess-btn');
-    const message = document.getElementById('message');
-    const attemptsDisplay = document.getElementById('attempts');
-    const newGameBtn = document.getElementById('new-game-btn');
+    // Game logic
+    const choices = ['rock', 'paper', 'scissors'];
+    const resultDiv = document.getElementById('result');
     
-    guessBtn.addEventListener('click', checkGuess);
-    newGameBtn.addEventListener('click', startNewGame);
-    
-    function checkGuess() {
-        const guess = parseInt(guessInput.value);
-        
-        if (isNaN(guess) || guess < 1 || guess > 100) {
-            message.textContent = 'Please enter a valid number between 1 and 100';
-            return;
-        }
-        
-        attempts++;
-        attemptsDisplay.textContent = `Attempts: ${attempts}/${maxAttempts}`;
-        
-        if (guess === targetNumber) {
-            message.textContent = 'Congratulations! You guessed the number!';
-            endGame(true);
-        } else if (attempts >= maxAttempts) {
-            message.textContent = `Game over! The number was ${targetNumber}.`;
-            endGame(false);
-        } else {
-            message.textContent = guess < targetNumber ? 'Too low!' : 'Too high!';
-        }
-        
-        guessInput.value = '';
-    }
-    
-    function endGame(isWin) {
-        guessInput.disabled = true;
-        guessBtn.disabled = true;
-        newGameBtn.style.display = 'inline-block';
-        
-        // Update user stats
-        const users = JSON.parse(localStorage.getItem('users'));
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        
-        const userIndex = users.findIndex(u => u.email === currentUser.email);
-        if (userIndex !== -1) {
-            if (isWin) {
-                users[userIndex].wins++;
+    document.querySelectorAll('.choice-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const playerChoice = this.getAttribute('data-choice');
+            const computerChoice = choices[Math.floor(Math.random() * choices.length)];
+            
+            let result;
+            
+            if (playerChoice === computerChoice) {
+                result = "It's a tie!";
+            } else if (
+                (playerChoice === 'rock' && computerChoice === 'scissors') ||
+                (playerChoice === 'paper' && computerChoice === 'rock') ||
+                (playerChoice === 'scissors' && computerChoice === 'paper')
+            ) {
+                result = `You win! ${playerChoice} beats ${computerChoice}`;
+                currentUser.wins = (currentUser.wins || 0) + 1;
             } else {
-                users[userIndex].losses++;
+                result = `You lose! ${computerChoice} beats ${playerChoice}`;
+                currentUser.losses = (currentUser.losses || 0) + 1;
             }
             
-            // Update current user data
-            currentUser.wins = users[userIndex].wins;
-            currentUser.losses = users[userIndex].losses;
+            // Update display
+            resultDiv.innerHTML = `
+                <p>You chose: ${playerChoice}</p>
+                <p>Computer chose: ${computerChoice}</p>
+                <p><strong>${result}</strong></p>
+            `;
             
+            document.getElementById('wins').textContent = currentUser.wins;
+            document.getElementById('losses').textContent = currentUser.losses;
+            
+            // Update in storage
+            const userIndex = users.findIndex(user => user.email === currentUserEmail);
+            users[userIndex] = currentUser;
             localStorage.setItem('users', JSON.stringify(users));
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-        }
-    }
+        });
+    });
     
-    function startNewGame() {
-        targetNumber = Math.floor(Math.random() * 100) + 1;
-        attempts = 0;
-        attemptsDisplay.textContent = `Attempts: 0/${maxAttempts}`;
-        message.textContent = '';
-        guessInput.disabled = false;
-        guessBtn.disabled = false;
-        newGameBtn.style.display = 'none';
-        guessInput.focus();
-    }
+    // Logout button
+    document.getElementById('logout-btn').addEventListener('click', function() {
+        localStorage.removeItem('currentUser');
+        window.location.href = 'index.html';
+    });
 });

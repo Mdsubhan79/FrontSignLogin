@@ -1,441 +1,284 @@
+/* style.css - Complete Styling for All Pages */
+
+/* ================ Base Styles ================ */
+:root {
+  --primary-color: #3498db;
+  --primary-dark: #2980b9;
+  --secondary-color: #2c3e50;
+  --light-color: #f5f5f5;
+  --dark-color: #333;
+  --success-color: #2ecc71;
+  --danger-color: #e74c3c;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
+}
+
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-    background-color: #defaf9;
-    color: #333;
-    line-height: 1.6;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--light-color);
+  color: var(--dark-color);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
+/* ================ Layout Styles ================ */
 .container {
-    width: 100%;
-    padding: 15px;
-    margin: 0 auto;
+  width: 90%;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
 }
 
-/* Header styles */
 header {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid #ddd;
+  margin-bottom: 2rem;
 }
 
-.user-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
+h1 {
+  color: var(--secondary-color);
+  margin-bottom: 1.5rem;
+  font-size: 2.2rem;
 }
 
-button, .profile-btn, .back-btn {
-    padding: 6px 12px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-button:hover, .profile-btn:hover, .back-btn:hover {
-    background-color: #45a049;
-}
-
-#logout-btn, #profile-logout-btn {
-    background-color: #f44336;
-}
-
-#logout-btn:hover, #profile-logout-btn:hover {
-    background-color: #d32f2f;
-}
-
-/* Auth form styles */
+/* ================ Form Styles ================ */
 .auth-form {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    margin: 20px auto;
-}
-
-.auth-form h1 {
-    text-align: center;
-    margin-bottom: 15px;
-    font-size: 1.5rem;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 .form-group {
-    margin-bottom: 15px;
+  margin-bottom: 1.5rem;
+  text-align: left;
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-    font-size: 0.9rem;
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--secondary-color);
 }
 
 .form-group input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 1rem;
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  transition: var(--transition);
 }
 
-.error-message {
-    color: #f44336;
-    margin-top: 10px;
-    text-align: center;
-    font-size: 0.9rem;
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
 }
 
-/* Game container styles */
+/* ================ Button Styles ================ */
+.play-btn, .btn {
+  display: inline-block;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  transition: var(--transition);
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: var(--secondary-color);
+}
+
+.btn-secondary:hover {
+  background: #1a252f;
+}
+
+/* ================ Link Styles ================ */
+.auth-links {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.auth-links a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.auth-links a:hover {
+  text-decoration: underline;
+  color: var(--primary-dark);
+}
+
+/* ================ Game Page Styles ================ */
 .game-container {
-    background: rgb(1, 139, 116);
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
+  margin-top: 2rem;
 }
 
-.game-container p {
-    margin: 10px 0;
-    font-size: 1rem;
+.game-stats {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  font-size: 1.2rem;
 }
 
-#guess-input {
-    padding: 8px;
-    width: 80px;
-    font-size: 1rem;
-    text-align: center;
-    margin-right: 5px;
+.game-stats p {
+  background: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  font-weight: 600;
 }
 
-.profile-container {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.stats {
-    margin-top: 15px;
-    font-size: 1rem;
-}
-
-.stats p {
-    margin: 8px 0;
-}
-
-/* Game specific styles */
-.choices {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    margin: 20px 0;
+.game-choices {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
 }
 
 .choice-btn {
-    font-size: 40px;
-    background: none;
-    border: 3px solid #4CAF50;
-    border-radius: 50%;
-    width: 70px;
-    height: 70px;
-    cursor: pointer;
-    transition: all 0.3s;
+  font-size: 3rem;
+  background: white;
+  border: 3px solid var(--primary-color);
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .choice-btn:hover {
-    background-color: #4CAF50;
-    color: white;
-    transform: scale(1.1);
+  background: var(--primary-color);
+  color: white;
+  transform: scale(1.1) translateY(-5px);
 }
 
-.results {
-    display: flex;
+.result-container {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  min-height: 100px;
+}
+
+/* ================ Profile Page Styles ================ */
+.profile-container {
+  background: white;
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.profile-info {
+  margin-bottom: 2rem;
+}
+
+.profile-info p {
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  padding: 0.8rem;
+  background: #f8f9fa;
+  border-radius: var(--border-radius);
+}
+
+.profile-info span {
+  font-weight: 600;
+  color: var(--secondary-color);
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.actions .btn {
+  width: auto;
+}
+
+/* ================ Responsive Styles ================ */
+@media (max-width: 768px) {
+  .container {
+    width: 95%;
+    padding: 1.5rem;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .game-choices {
+    gap: 1rem;
+  }
+
+  .choice-btn {
+    width: 80px;
+    height: 80px;
+    font-size: 2.5rem;
+  }
+
+  .actions {
     flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    margin-bottom: 20px;
-}
+  }
 
-.result-selection {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-}
-
-.result-label {
-    font-size: 1rem;
-    font-weight: bold;
-}
-
-.choice-display {
-    font-size: 40px;
-    width: 70px;
-    height: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.result-text {
-    font-size: 1.2rem;
-    font-weight: bold;
-    text-align: center;
-    margin: 15px 0;
-    min-height: 30px;
-}
-
-.score-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.score-box {
-    background: white;
-    padding: 10px 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 5px rgba(0,0,0,0.1);
-    text-align: center;
+  .actions .btn {
     width: 100%;
+  }
 }
 
-.score-label {
-    display: block;
-    font-size: 0.9rem;
-    color: #666;
+/* ================ Utility Classes ================ */
+.text-center {
+  text-align: center;
 }
 
-.score-value {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #333;
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mt-4 { margin-top: 2rem; }
+
+.hidden {
+  display: none;
 }
 
-/* Media Queries */
-
-/* 250px - 399px */
-/* 250px - 399px - Super Compact Version */
-@media (min-width: 250px) {
-    .container {
-        padding: 5px;
-    }
-    
-    .game-container {
-        padding: 8px 5px;
-        box-shadow: 0 0 3px rgba(0,0,0,0.1);
-    }
-    
-    .choices {
-        flex-direction: row;
-        gap: 4px;
-        margin: 8px 0;
-    }
-    
-    .results {
-        flex-direction: row;
-        gap: 10px;
-        margin: 5px 0;
-    }
-    
-    .score-container {
-        flex-direction: row;
-        gap: 5px;
-        margin-top: 8px;
-    }
-    
-    .score-box {
-        min-width: 60px;
-        padding: 3px 5px;
-    }
-    
-    .choice-btn {
-        font-size: 20px;
-        width: 36px;
-        height: 36px;
-        border-width: 1px;
-        padding: 0;
-    }
-    
-    .choice-display {
-        font-size: 20px;
-        width: 36px;
-        height: 36px;
-    }
-    
-    .result-text {
-        font-size: 0.7rem;
-        margin: 4px 0;
-        min-height: 18px;
-    }
-    
-    .game-container p {
-        font-size: 0.65rem;
-        margin: 3px 0;
-    }
-    
-    .score-label {
-        font-size: 0.55rem;
-    }
-    
-    .score-value {
-        font-size: 0.7rem;
-    }
-    
-    .result-label {
-        font-size: 0.6rem;
-    }
-    
-    button, .profile-btn, .back-btn {
-        padding: 3px 6px;
-        font-size: 0.6rem;
-    }
-    
-    .user-info {
-        gap: 4px;
-    }
-    
-    header {
-        gap: 6px;
-        margin-bottom: 8px;
-        padding-bottom: 6px;
-    }
-    
-    /* Specific adjustments for the image layout */
-    .result-selection {
-        flex-direction: column;
-        gap: 2px;
-    }
-    
-    #guess-input {
-        width: 60px;
-        padding: 4px;
-        font-size: 0.8rem;
-    }
-}
-/* 400px - 599px */
-@media (min-width: 400px) {
-    .container {
-        max-width: 400px;
-    }
-    
-    header {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
-    
-    .user-info {
-        flex-direction: row;
-    }
-    
-    .auth-form {
-        padding: 25px;
-    }
-    
-    .choice-btn {
-        font-size: 45px;
-        width: 75px;
-        height: 75px;
-    }
-    
-    .choice-display {
-        font-size: 45px;
-        width: 75px;
-        height: 75px;
-    }
+/* ================ Animation Styles ================ */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-/* 600px - 799px */
-@media (min-width: 600px) {
-    .container {
-        max-width: 600px;
-        padding: 25px;
-    }
-    
-    .auth-form {
-        max-width: 500px;
-        margin: 30px auto;
-        padding: 30px;
-    }
-    
-    .game-container {
-        padding: 30px;
-    }
-    
-    .choice-btn {
-        font-size: 50px;
-        width: 80px;
-        height: 80px;
-    }
-    
-    .choice-display {
-        font-size: 50px;
-        width: 80px;
-        height: 80px;
-    }
-    
-    .result-text {
-        font-size: 1.5rem;
-    }
-}
-
-/* 800px and up */
-@media (min-width: 800px) {
-    .container {
-        max-width: 800px;
-    }
-    
-    button, .profile-btn, .back-btn {
-        padding: 8px 15px;
-        font-size: 1rem;
-    }
-    
-    .auth-form h1 {
-        font-size: 1.8rem;
-    }
-    
-    .result-text {
-        font-size: 1.8rem;
-    }
-    
-    .score-value {
-        font-size: 1.5rem;
-    }
-}
-
-/* Landscape orientation for mobile */
-@media (max-height: 500px) and (orientation: landscape) {
-    header {
-        flex-direction: row;
-    }
-    
-    .user-info {
-        flex-direction: row;
-    }
-    
-    .choices {
-        flex-direction: row;
-    }
-    
-    .game-container {
-        padding: 15px;
-    }
+.fade-in {
+  animation: fadeIn 0.5s ease forwards;
 }

@@ -3,58 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rock Paper Scissors</title>
+    <title>Game Portal</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Rock Paper Scissors</h1>
-            <div class="user-info">
-                <span id="username-display"></span>
-                <a href="profile.html" class="profile-btn">Profile</a>
-                <button id="logout-btn">Logout</button>
-            </div>
-        </header>
-        
+        <h1>Choose a game to play ~</h1>
+         <h3>Rock-Paper-Scissors</h3>
         <div class="game-container">
-            <div class="choices">
-                <button class="choice-btn" data-choice="rock">✊</button>
-                <button class="choice-btn" data-choice="paper">✋</button>
-                <button class="choice-btn" data-choice="scissors">✌️</button>
-            </div>
-            
-            <div class="results">
-                <div class="result-selection">
-                    <span class="result-label">You</span>
-                    <span id="player-choice" class="choice-display">?</span>
-                </div>
-                <div class="result-selection">
-                    <span class="result-label">Computer</span>
-                    <span id="computer-choice" class="choice-display">?</span>
-                </div>
-            </div>
-            
-            <div id="result-text" class="result-text">Choose your weapon!</div>
-            
-            <div class="score-container">
-                <div class="score-box">
-                    <span class="score-label">Wins:</span>
-                    <span id="wins" class="score-value">0</span>
-                </div>
-                <div class="score-box">
-                    <span class="score-label">Losses:</span>
-                    <span id="losses" class="score-value">0</span>
-                </div>
-                <div class="score-box">
-                    <span class="score-label">Draws:</span>
-                    <span id="draws" class="score-value">0</span>
-                </div>
+            <p>You need to be logged in to play!</p>
+            <button id="play-btn" class="btn">Play Now</button>
+<!--    game 2-->
+         <h3>Tic Tac Toe</h3>
+        <div class="game-container">
+            <p>You need to be logged in to play!</p>
+            <button id="play-btn2" class="btn">Play Now</button>
+            <div class="auth-links">
+                <a href="login.html">Login</a> | 
+                <a href="signup.html">Sign Up</a>
             </div>
         </div>
     </div>
-
     <script src="auth.js"></script>
-    <script src="game.js"></script>
+    <script>
+        document.getElementById('play-btn').addEventListener('click', function() {
+            if (localStorage.getItem('currentUser')) {
+                window.location.href = 'game.html';
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+        <script>
+        document.getElementById('play-btn2').addEventListener('click', function() {
+            if (localStorage.getItem('currentUser')) {
+                window.location.href = 'game2.html';
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+    <script>
+        // Store intended page when play buttons are clicked
+document.getElementById('play-btn')?.addEventListener('click', () => {
+  localStorage.setItem('redirectAfterLogin', 'game.html');
+  const isLoggedIn = !!localStorage.getItem('currentUser');
+  window.location.href = isLoggedIn ? 'game.html' : 'login.html';
+});
+
+document.getElementById('play-btn2')?.addEventListener('click', () => {
+  localStorage.setItem('redirectAfterLogin', 'game2.html');
+  const isLoggedIn = !!localStorage.getItem('currentUser');
+  window.location.href = isLoggedIn ? 'game2.html' : 'login.html';
+});
+
+    </script>
 </body>
 </html>
