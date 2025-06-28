@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">GameZone</a>
+        <div class="nav-links" id="navLinks">
+            <!-- Dynamically filled by JS -->
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="game-container">
+            <h1>Rock Paper Scissors</h1>
+            <div class="score">
+                <div>Wins: <span id="wins">0</span></div>
+                <div>Losses: <span id="losses">0</span></div>
+            </div>
+            
+            <div class="game-choices">
+                <button class="choice-btn" data-choice="rock">✊</button>
+                <button class="choice-btn" data-choice="paper">✋</button>
+                <button class="choice-btn" data-choice="scissors">✌</button>
+            </div>
+            
+            <div class="result" id="result">Choose an option to play!</div>
+            <div id="computer-choice"></div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="profile.js"></script>
+    <script src="game.js"></script>  
+    <script>
+        // Check if user is logged in
+        const currentUser = getCurrentUser();
+        if (!currentUser) {
+            window.location.href = 'login.html';
+        }
+        
+        // Update navigation
+        function updateNav() {
+            const navLinks = document.getElementById('navLinks');
+            
+            navLinks.innerHTML = `
+                <a href="profile.html">Profile</a>
+                <a href="game.html">Play Game</a>
+                <a href="#" id="logout-btn">Logout</a>
+            `;
+            
+            document.getElementById('logout-btn').addEventListener('click', function() {
+                logoutUser();
+                window.location.href = 'index.html';
+            });
+        }
+        
+        // Initialize
+        updateNav();
+        
+        // Initialize game
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update score display
+            document.getElementById('wins').textContent = currentUser.wins || 0;
+            document.getElementById('losses').textContent = currentUser.losses || 0;
+            
+            // Set up game event listeners
+            document.querySelectorAll('.choice-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const userChoice = this.getAttribute('data-choice');
+                    playGame(userChoice);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

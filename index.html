@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Rock Paper Scissors</h1>
+            <div class="user-info">
+                <span id="username-display"></span>
+                <a href="profile.html" class="profile-btn">Profile</a>
+                <button id="logout-btn">Logout</button>
+            </div>
+        </header>
+        
+        <div class="game-container">
+            <div class="choices">
+                <button class="choice-btn" data-choice="rock">✊</button>
+                <button class="choice-btn" data-choice="paper">✋</button>
+                <button class="choice-btn" data-choice="scissors">✌️</button>
+            </div>
+            
+            <div class="results">
+                <div class="result-selection">
+                    <span class="result-label">You</span>
+                    <span id="player-choice" class="choice-display">?</span>
+                </div>
+                <div class="result-selection">
+                    <span class="result-label">Computer</span>
+                    <span id="computer-choice" class="choice-display">?</span>
+                </div>
+            </div>
+            
+            <div id="result-text" class="result-text">Choose your weapon!</div>
+            
+            <div class="score-container">
+                <div class="score-box">
+                    <span class="score-label">Wins:</span>
+                    <span id="wins" class="score-value">0</span>
+                </div>
+                <div class="score-box">
+                    <span class="score-label">Losses:</span>
+                    <span id="losses" class="score-value">0</span>
+                </div>
+                <div class="score-box">
+                    <span class="score-label">Draws:</span>
+                    <span id="draws" class="score-value">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>
