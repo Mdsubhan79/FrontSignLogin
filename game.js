@@ -2,104 +2,77 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (!currentUser) return;
     
-    // Initialize scores
-    let wins = currentUser.wins || 0;
-    let losses = currentUser.losses || 0;
-    let draws = currentUser.draws || 0;
+    let targetNumber = Math.floor(Math.random() * 100) + 1;
+    let attempts = 0;
+    const maxAttempts = 10;
     
-    // DOM elements
-    const choiceButtons = document.querySelectorAll('.choice-btn');
-    const playerChoiceDisplay = document.getElementById('player-choice');
-    const computerChoiceDisplay = document.getElementById('computer-choice');
-    const resultText = document.getElementById('result-text');
-    const winsDisplay = document.getElementById('wins');
-    const lossesDisplay = document.getElementById('losses');
-    const drawsDisplay = document.getElementById('draws');
+    const guessInput = document.getElementById('guess-input');
+    const guessBtn = document.getElementById('guess-btn');
+    const message = document.getElementById('message');
+    const attemptsDisplay = document.getElementById('attempts');
+    const newGameBtn = document.getElementById('new-game-btn');
     
-    // Update score displays
-    winsDisplay.textContent = wins;
-    lossesDisplay.textContent = losses;
-    drawsDisplay.textContent = draws;
+    guessBtn.addEventListener('click', checkGuess);
+    newGameBtn.addEventListener('click', startNewGame);
     
-    // Game logic
-    choiceButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const playerChoice = this.dataset.choice;
-            const computerChoice = getComputerChoice();
-            
-            // Display choices
-            playerChoiceDisplay.textContent = getEmoji(playerChoice);
-            computerChoiceDisplay.textContent = getEmoji(computerChoice);
-            
-            // Determine winner
-            const result = determineWinner(playerChoice, computerChoice);
-            
-            // Update UI and scores
-            if (result === 'win') {
-                resultText.textContent = 'You win!';
-                wins++;
-                winsDisplay.textContent = wins;
-            } else if (result === 'lose') {
-                resultText.textContent = 'You lose!';
-                losses++;
-                lossesDisplay.textContent = losses;
-            } else {
-                resultText.textContent = "It's a draw!";
-                draws++;
-                drawsDisplay.textContent = draws;
-            }
-            
-            // Save updated scores
-            saveScores(wins, losses, draws);
-        });
-    });
-    
-    function getComputerChoice() {
-        const choices = ['rock', 'paper', 'scissors'];
-        const randomIndex = Math.floor(Math.random() * 3);
-        return choices[randomIndex];
-    }
-    
-    function getEmoji(choice) {
-        switch(choice) {
-            case 'rock': return '✊';
-            case 'paper': return '✋';
-            case 'scissors': return '✌️';
-            default: return '?';
-        }
-    }
-    
-    function determineWinner(player, computer) {
-        if (player === computer) return 'draw';
+    function checkGuess() {
+        const guess = parseInt(guessInput.value);
         
-        if (
-            (player === 'rock' && computer === 'scissors') ||
-            (player === 'paper' && computer === 'rock') ||
-            (player === 'scissors' && computer === 'paper')
-        ) {
-            return 'win';
-        } else {
-            return 'lose';
+        if (isNaN(guess) || guess < 1 || guess > 100) {
+            message.textContent = 'Please enter a valid number between 1 and 100';
+            return;
         }
+        
+        attempts++;
+        attemptsDisplay.textContent = `Attempts: ${attempts}/${maxAttempts}`;
+        
+        if (guess === targetNumber) {
+            message.textContent = 'Congratulations! You guessed the number!';
+            endGame(true);
+        } else if (attempts >= maxAttempts) {
+            message.textContent = `Game over! The number was ${targetNumber}.`;
+            endGame(false);
+        } else {
+            message.textContent = guess < targetNumber ? 'Too low!' : 'Too high!';
+        }
+        
+        guessInput.value = '';
     }
     
-    function saveScores(wins, losses, draws) {
-        const users = JSON.parse(localStorage.getItem('users')) || [];
+    function endGame(isWin) {
+        guessInput.disabled = true;
+        guessBtn.disabled = true;
+        newGameBtn.style.display = 'inline-block';
+        
+        // Update user stats
+        const users = JSON.parse(localStorage.getItem('users'));
         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
         
         const userIndex = users.findIndex(u => u.email === currentUser.email);
         if (userIndex !== -1) {
-            users[userIndex].wins = wins;
-            users[userIndex].losses = losses;
-            users[userIndex].draws = draws;
+            if (isWin) {
+                users[userIndex].wins++;
+            } else {
+                users[userIndex].losses++;
+            }
             
             // Update current user data
-            currentUser.wins = wins;
-            currentUser.losses = losses;
-            currentUser.draws = draws;
+            currentUser.wins = users[userIndex].wins;
+            currentUser.losses = users[userIndex].losses;
             
             localStorage.setItem('users', JSON.stringify(users));
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
         }
+    }
+    
+    function startNewGame() {
+        targetNumber = Math.floor(Math.random() * 100) + 1;
+        attempts = 0;
+        attemptsDisplay.textContent = `Attempts: 0/${maxAttempts}`;
+        message.textContent = '';
+        guessInput.disabled = false;
+        guessBtn.disabled = false;
+        newGameBtn.style.display = 'none';
+        guessInput.focus();
     }
 });

@@ -1,10 +1,9 @@
-// Check if user is logged in and redirect if not
 function checkAuth() {
     const currentUser = localStorage.getItem('currentUser');
     const currentPage = window.location.pathname.split('/').pop();
     
     // Pages that don't require authentication
-    const authPages = ['login.html', 'signup.html'];
+    const authPages = ['login.html', 'signup.html', ''];
     
     // If user is not logged in and trying to access protected page
     if (!currentUser && !authPages.includes(currentPage)) {
