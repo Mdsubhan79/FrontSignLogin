@@ -359,7 +359,7 @@ p {
     margin-top: 3rem;
 }
 
-/* ================ Responsive Styles ================ */
+
 @media (max-width: 768px) {
     .container {
         padding: 1.5rem;
@@ -643,7 +643,6 @@ p {
     background-color: var(--success-color);
 }
 
-/* Responsive adjustments */
 @media (max-width: 576px) {
     .auth-card {
         padding: 1.5rem;
@@ -929,4 +928,20 @@ p {
         width: 100%;
         padding: 0;
     }
+}
+
+
+
+.alert {
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+.alert-error {
+  background: #ffebee;
+  color: #d32f2f;
+}
+.alert-success {
+  background: #e8f5e9;
+  color: #2e7d32;
 }
