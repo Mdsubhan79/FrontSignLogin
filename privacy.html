@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameHub - Privacy Policy</title>
+    <style>
+        /* Base Styles */
+        :root {
+            --primary: #4361ee;
+            --dark: #212529;
+            --light: #f8f9fa;
+            --gray: #6c757d;
+            --border-radius: 8px;
+            --box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: var(--light);
+            color: var(--dark);
+            padding: 0;
+            margin: 0;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        header {
+            background-color: white;
+            box-shadow: var(--box-shadow);
+            padding: 15px 0;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        h1 {
+            color: var(--primary);
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+
+        h2 {
+            font-size: 1.3rem;
+            margin: 25px 0 10px;
+            color: var(--dark);
+        }
+
+        p, li {
+            margin-bottom: 10px;
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+
+        ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .policy-section {
+            background: white;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #3a0ca3;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px 0;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Toggle Sections */
+        .toggle-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-weight: bold;
+            cursor: pointer;
+            padding: 5px 0;
+            text-align: left;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .toggle-content {
+            display: none;
+            padding-top: 10px;
+        }
+
+        .toggle-content.show {
+            display: block;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            h2 {
+                font-size: 1.2rem;
+            }
+            
+            .policy-section {
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                width: 95%;
+            }
+            
+            h1 {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .logo {
+                font-size: 1.3rem;
+            }
+            
+            h1 {
+                font-size: 1.2rem;
+            }
+            
+            p, li {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 250px) {
+            .container {
+                width: 98%;
+                padding: 10px 0;
+            }
+            
+            .logo {
+                font-size: 1.1rem;
+            }
+            
+            h1 {
+                font-size: 1.1rem;
+                margin-bottom: 15px;
+            }
+            
+            h2 {
+                font-size: 1rem;
+            }
+            
+            p, li {
+                font-size: 0.85rem;
+            }
+            
+            .back-btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <a href="index.html" class="logo">GameHub</a>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1>Privacy Policy</h1>
+        
+        <p>Last Updated: <span id="currentDate"></span></p>
+        
+        <div class="policy-section">
+            <button class="toggle-btn" onclick="toggleSection('dataCollection')">
+                <span>1. Data We Collect</span>
+                <span>+</span>
+            </button>
+            <div class="toggle-content" id="dataCollection">
+                <p>We may collect:</p>
+                <ul>
+                    <li>Account information (username, email)</li>
+                    <li>Game progress and scores</li>
+                    <li>Device information (browser, IP address)</li>
+                    <li>Cookies for site functionality</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="policy-section">
+            <button class="toggle-btn" onclick="toggleSection('dataUse')">
+                <span>2. How We Use Data</span>
+                <span>+</span>
+            </button>
+            <div class="toggle-content" id="dataUse">
+                <p>Your data helps us:</p>
+                <ul>
+                    <li>Provide and improve our games</li>
+                    <li>Personalize your experience</li>
+                    <li>Prevent fraud and abuse</li>
+                    <li>Send important service updates</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="policy-section">
+            <button class="toggle-btn" onclick="toggleSection('dataSharing')">
+                <span>3. Data Sharing</span>
+                <span>+</span>
+            </button>
+            <div class="toggle-content" id="dataSharing">
+                <p>We don't sell your data. We may share with:</p>
+                <ul>
+                    <li>Service providers who help operate GameHub</li>
+                    <li>Legal authorities when required by law</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="policy-section">
+            <button class="toggle-btn" onclick="toggleSection('yourRights')">
+                <span>4. Your Rights</span>
+                <span>+</span>
+            </button>
+            <div class="toggle-content" id="yourRights">
+                <p>You can:</p>
+                <ul>
+                    <li>Access and update your account information</li>
+                    <li>Request deletion of your data</li>
+                    <li>Opt-out of marketing emails</li>
+                    <li>Disable cookies in your browser</li>
+                </ul>
+            </div>
+        </div>
+        
+    
+        
+        <div class="policy-section">
+            <button class="toggle-btn" onclick="toggleSection('changes')">
+                <span>5. Policy Changes</span>
+                <span>+</span>
+            </button>
+            <div class="toggle-content" id="changes">
+                <p>We may update this policy. We'll notify you of significant changes through our website or email.</p>
+            </div>
+        </div>
+        
+        <a href="index.html" class="back-btn">Back to Home</a>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; <span id="currentYear"></span> GameHub. All rights reserved.</p>
+            <p>Contact: Official.bitebox@gmail.com.com</p>
+        </div>
+    </footer>
+
+    <script>
+        // Set current date and year
+        document.getElementById('currentDate').textContent = new Date().toLocaleDateString();
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+        
+        // Toggle sections
+        function toggleSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const btn = document.querySelector(`[onclick="toggleSection('${sectionId}')]`);
+            
+            section.classList.toggle('show');
+            btn.querySelector('span:last-child').textContent = 
+                section.classList.contains('show') ? '−' : '+';
+        }
+        
+        // Open first section by default
+        window.onload = function() {
+            toggleSection('dataCollection');
+        };
+        
+        // Make all external links open in new tab
+        document.querySelectorAll('a[href^="http"]').forEach(link => {
+            link.setAttribute('target', '_blank');
+        });
+    </script>
+</body>
+</html>

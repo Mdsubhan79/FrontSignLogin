@@ -1,189 +1,346 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Tic Tac Toe vs Computer</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    .board {
-      display: grid;
-      grid-template-columns: repeat(3, 100px);
-      gap: 5px;
-      margin: 20px auto;
-      width: max-content;
-    }
-    .cell {
-      width: 100px;
-      height: 100px;
-      font-size: 2em;
-      text-align: center;
-      line-height: 100px;
-      background: #fff;
-      border: 2px solid #333;
-      cursor: pointer;
-    }
-    .cell:hover {
-      background-color: #eee;
-    }
-    #status, #statsDisplay {
-      font-size: 1.2em;
-      margin-top: 20px;
-    }
-    .container {
-      margin-top: 30px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe | GameHub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 2rem auto;
+            max-width: 400px;
+        }
+        
+        .cell {
+            aspect-ratio: 1/1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            background: white;
+            border: 2px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .cell:hover {
+            background-color: rgba(67, 97, 238, 0.1);
+        }
+        
+        .cell.x {
+            color: var(--accent-color);
+        }
+        
+        .cell.o {
+            color: var(--success-color);
+        }
+        
+        .cell.winner {
+            background-color: rgba(76, 201, 240, 0.2);
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .player-turn {
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            background: white;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .player-turn.x {
+            color: var(--accent-color);
+        }
+        
+        .player-turn.o {
+            color: var(--success-color);
+        }
+    </style>
 </head>
-<body onload="initGameAfterAuth();">
-  <div class="container">
-    <h2>Tic Tac Toe - Player vs Computer</h2>
-    <div class="board" id="board"></div>
-    <div id="status">Your Turn (X)</div>
-    <div id="statsDisplay" style="margin-top: 10px;"></div>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">GameHub</h1>
+            <div class="nav-links">
+                <a href="profile.html" class="nav-link"><i class="fas fa-user"></i> Profile</a>
+                <a href="#" id="logout-btn" class="nav-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+    </nav>
 
-    <button onclick="initGame()" class="btn">Restart</button>
-    <br><br>
+    <div class="container game-container">
+        <h1 class="game-title">Tic Tac Toe</h1>
+        
+        <div class="game-stats">
+            <div class="stat-card">
+                <h4>Wins</h4>
+                <span id="wins">0</span>
+            </div>
+            <div class="stat-card">
+                <h4>Losses</h4>
+                <span id="losses">0</span>
+            </div>
+            <div class="stat-card">
+                <h4>Draws</h4>
+                <span id="draws">0</span>
+            </div>
+        </div>
 
-                <a href="index.html">← Back to Home</a>
-  </div>
+        <div class="game-info">
+            <div id="status" class="player-turn x">Your Turn (X)</div>
+            <div>
+                <button id="new-game-btn" class="btn btn-outline">
+                    <i class="fas fa-sync-alt"></i> New Game
+                </button>
+            </div>
+        </div>
 
-  <!-- Game + Logic -->
-  <script>
-    let board = [];
-    let gameOver = false;
-    const PLAYER = 'X';
-    const COMPUTER = 'O';
+        <div class="board" id="board"></div>
 
-    function initGameAfterAuth() {
-  if (checkAuth()) {  // Only initialize if authenticated
-    initGame();
-  }
-}
+        <div class="game-actions">
+            <a href="index.html" class="btn btn-outline">
+                <i class="fas fa-home"></i> Back to Home
+            </a>
+            <button id="reset-stats" class="btn btn-danger">
+                <i class="fas fa-trash"></i> Reset Stats
+            </button>
+        </div>
+    </div>
 
-    function initGame() {
-      board = Array(9).fill("");
-      gameOver = false;
-      const boardDiv = document.getElementById("board");
-      boardDiv.innerHTML = "";
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            if (!localStorage.getItem('currentUser')) {
+                window.location.href = 'login.html';
+                return;
+            }
 
-      for (let i = 0; i < 9; i++) {
-        const cell = document.createElement("div");
-        cell.classList.add("cell");
-        cell.dataset.index = i;
-        cell.addEventListener("click", playerMove);
-        boardDiv.appendChild(cell);
-      }
+            // Game constants
+            const PLAYER = 'x';
+            const COMPUTER = 'o';
+            const WIN_PATTERNS = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
+                [0, 4, 8], [2, 4, 6]             // diagonals
+            ];
 
-      document.getElementById("status").innerText = "Your Turn (X)";
-      showStats();
-    }
-
-    function playerMove(e) {
-      const index = e.target.dataset.index;
-      if (board[index] !== "" || gameOver) return;
-
-      makeMove(index, PLAYER);
-      if (!gameOver) {
-        setTimeout(computerMove, 500);
-      }
-    }
-
-    function computerMove() {
-      const emptyCells = board
-        .map((v, i) => v === "" ? i : null)
-        .filter(v => v !== null);
-      if (emptyCells.length === 0) return;
-
-      const randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
-      makeMove(randomIndex, COMPUTER);
-    }
-
-    function makeMove(index, player) {
-      board[index] = player;
-      const cell = document.querySelector(`.cell[data-index='${index}']`);
-      cell.innerText = player;
-      cell.style.pointerEvents = "none";
-
-      const winner = checkWinner();
-      if (winner) {
-        gameOver = true;
-        if (winner === PLAYER) {
-          document.getElementById("status").innerText = "You Win!";
-          updateStats("win");
-        } else {
-          document.getElementById("status").innerText = "Computer Wins!";
-          updateStats("loss");
-        }
-        showStats();
-        return;
-      }
-
-      if (board.every(cell => cell !== "")) {
-        document.getElementById("status").innerText = "It's a Draw!";
-        gameOver = true;
-        updateStats("loss");
-        showStats();
-        return;
-      }
-
-      document.getElementById("status").innerText =
-        (player === PLAYER) ? "Computer's Turn (O)" : "Your Turn (X)";
-    }
-
-    function checkWinner() {
-      const winPatterns = [
-        [0,1,2], [3,4,5], [6,7,8],
-        [0,3,6], [1,4,7], [2,5,8],
-        [0,4,8], [2,4,6]
-      ];
-
-      for (let pattern of winPatterns) {
-        const [a, b, c] = pattern;
-        if (board[a] && board[a] === board[b] && board[b] === board[c]) {
-          return board[a];
-        }
-      }
-      return null;
-    }
-
-    function showStats() {
-      const stats = getUserStats();
-      document.getElementById("statsDisplay").innerText =
-        `Wins: ${stats.wins} | Losses: ${stats.losses}`;
-    }
-
-    // --- Storage + Auth Helpers ---
-
-    function getSession() {
-      return localStorage.getItem("currentUser");
-    }
-
-    function checkAuth(redirect = true) {
-      const user = getSession();
-      if (!user && redirect) {
-        window.location.href = "login.html";
-      }
-      return !!user;
-    }
-
-    function updateStats(result) {
-      const user = getSession();
-      if (!user) return;
-
-      let stats = JSON.parse(localStorage.getItem("userStats")) || {};
-      if (!stats[user]) stats[user] = { wins: 0, losses: 0 };
-
-      if (result === "win") stats[user].wins++;
-      else stats[user].losses++;
-
-      localStorage.setItem("userStats", JSON.stringify(stats));
-    }
-
-    function getUserStats() {
-      const user = getSession();
-      const stats = JSON.parse(localStorage.getItem("userStats")) || {};
-      return stats[user] || { wins: 0, losses: 0 };
-    }
-  </script>
+            // Game state
+            let board = Array(9).fill('');
+            let currentPlayer = PLAYER;
+            let gameOver = false;
+            
+            // DOM elements
+            const boardElement = document.getElementById('board');
+            const statusElement = document.getElementById('status');
+            const winsElement = document.getElementById('wins');
+            const lossesElement = document.getElementById('losses');
+            const drawsElement = document.getElementById('draws');
+            
+            // Get current user stats
+            const currentUserEmail = localStorage.getItem('currentUser');
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            let currentUser = users.find(user => user.email === currentUserEmail);
+            
+            // Initialize user stats if not exists
+            if (!currentUser.tttStats) {
+                currentUser.tttStats = { wins: 0, losses: 0, draws: 0 };
+                const userIndex = users.findIndex(user => user.email === currentUserEmail);
+                users[userIndex] = currentUser;
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+            
+            // Update stats display
+            function updateStatsDisplay() {
+                winsElement.textContent = currentUser.tttStats.wins || 0;
+                lossesElement.textContent = currentUser.tttStats.losses || 0;
+                drawsElement.textContent = currentUser.tttStats.draws || 0;
+            }
+            
+            updateStatsDisplay();
+            
+            // Initialize board
+            function initBoard() {
+                boardElement.innerHTML = '';
+                board = Array(9).fill('');
+                currentPlayer = PLAYER;
+                gameOver = false;
+                statusElement.textContent = 'Your Turn (X)';
+                statusElement.className = 'player-turn x';
+                
+                for (let i = 0; i < 9; i++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    cell.dataset.index = i;
+                    cell.addEventListener('click', () => handleCellClick(i));
+                    boardElement.appendChild(cell);
+                }
+            }
+            
+            // Handle cell click
+            function handleCellClick(index) {
+                if (gameOver || board[index] !== '' || currentPlayer !== PLAYER) return;
+                
+                makeMove(index, PLAYER);
+                
+                if (!gameOver) {
+                    setTimeout(computerMove, 500);
+                }
+            }
+            
+            // Computer move with simple AI
+            function computerMove() {
+                if (gameOver) return;
+                
+                // Try to win
+                let move = findWinningMove(COMPUTER);
+                
+                // Block player if they can win
+                if (move === -1) {
+                    move = findWinningMove(PLAYER);
+                }
+                
+                // Choose center if available
+                if (move === -1 && board[4] === '') {
+                    move = 4;
+                }
+                
+                // Choose random corner
+                if (move === -1) {
+                    const corners = [0, 2, 6, 8].filter(i => board[i] === '');
+                    if (corners.length > 0) {
+                        move = corners[Math.floor(Math.random() * corners.length)];
+                    }
+                }
+                
+                // Choose random move
+                if (move === -1) {
+                    const emptyCells = board.map((cell, index) => cell === '' ? index : -1).filter(i => i !== -1);
+                    if (emptyCells.length > 0) {
+                        move = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+                    }
+                }
+                
+                if (move !== -1) {
+                    makeMove(move, COMPUTER);
+                }
+            }
+            
+            // Find winning move for a player
+            function findWinningMove(player) {
+                for (const pattern of WIN_PATTERNS) {
+                    const [a, b, c] = pattern;
+                    if (board[a] === player && board[b] === player && board[c] === '') return c;
+                    if (board[a] === player && board[c] === player && board[b] === '') return b;
+                    if (board[b] === player && board[c] === player && board[a] === '') return a;
+                }
+                return -1;
+            }
+            
+            // Make a move
+            function makeMove(index, player) {
+                board[index] = player;
+                const cell = boardElement.children[index];
+                cell.textContent = player;
+                cell.classList.add(player);
+                cell.style.pointerEvents = 'none';
+                
+                const winner = checkWinner();
+                if (winner) {
+                    gameOver = true;
+                    highlightWinningCells(winner.pattern);
+                    
+                    if (winner.player === PLAYER) {
+                        statusElement.textContent = 'You Win!';
+                        currentUser.tttStats.wins++;
+                    } else {
+                        statusElement.textContent = 'Computer Wins!';
+                        currentUser.tttStats.losses++;
+                    }
+                    
+                    updateStatsInStorage();
+                    updateStatsDisplay();
+                    return;
+                }
+                
+                if (board.every(cell => cell !== '')) {
+                    gameOver = true;
+                    statusElement.textContent = "It's a Draw!";
+                    currentUser.tttStats.draws++;
+                    updateStatsInStorage();
+                    updateStatsDisplay();
+                    return;
+                }
+                
+                currentPlayer = currentPlayer === PLAYER ? COMPUTER : PLAYER;
+                statusElement.textContent = currentPlayer === PLAYER ? 'Your Turn (X)' : "Computer's Turn (O)";
+                statusElement.className = currentPlayer === PLAYER ? 'player-turn x' : 'player-turn o';
+            }
+            
+            // Check for winner
+            function checkWinner() {
+                for (const pattern of WIN_PATTERNS) {
+                    const [a, b, c] = pattern;
+                    if (board[a] && board[a] === board[b] && board[b] === board[c]) {
+                        return { player: board[a], pattern };
+                    }
+                }
+                return null;
+            }
+            
+            // Highlight winning cells
+            function highlightWinningCells(pattern) {
+                for (const index of pattern) {
+                    boardElement.children[index].classList.add('winner');
+                }
+            }
+            
+            // Update stats in storage
+            function updateStatsInStorage() {
+                const userIndex = users.findIndex(user => user.email === currentUserEmail);
+                users[userIndex] = currentUser;
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+            
+            // New game button
+            document.getElementById('new-game-btn').addEventListener('click', initBoard);
+            
+            // Reset stats button
+            document.getElementById('reset-stats').addEventListener('click', function() {
+                if (confirm('Are you sure you want to reset your Tic Tac Toe statistics?')) {
+                    currentUser.tttStats = { wins: 0, losses: 0, draws: 0 };
+                    updateStatsInStorage();
+                    updateStatsDisplay();
+                    initBoard();
+                }
+            });
+            
+            // Logout button
+            document.getElementById('logout-btn').addEventListener('click', function() {
+                localStorage.removeItem('currentUser');
+                window.location.href = 'index.html';
+            });
+            
+            // Initialize the game
+            initBoard();
+        });
+    </script>
 </body>
 </html>

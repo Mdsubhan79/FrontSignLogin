@@ -4,59 +4,109 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">GameHub</h1>
+            <div class="nav-links">
+                <a href="#" id="profile-link" class="nav-link"><i class="fas fa-user"></i> Profile</a>
+                <a href="#" id="logout-link" class="nav-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+    </nav>
+
     <div class="container">
-        <h1>Choose a game to play ~</h1>
-         <h3>Rock-Paper-Scissors</h3>
-        <div class="game-container">
+        <div class="hero">
+            <h1>Welcome to GameHub</h1>
+            <p>Choose your favorite game to play!</p>
+        </div>
+
+        <div class="game-cards">
+            <div class="game-card">
+                <div class="game-icon">
+                    <i class="fas fa-hand-rock"></i>
+                </div>
+                <h3>Rock-Paper-Scissors</h3>
+                <p>Classic hand game with simple rules</p>
+                <button id="play-btn" class="btn play-btn">
+                    <i class="fas fa-play"></i> Play Now
+                </button>
+            </div>
+
+            <div class="game-card">
+                <div class="game-icon">
+                    <i class="fas fa-times"></i>
+                </div>
+                <h3>Tic Tac Toe</h3>
+                <p>Strategic grid-based game</p>
+                <button id="play-btn2" class="btn play-btn">
+                    <i class="fas fa-play"></i> Play Now
+                </button>
+            </div>
+        </div>
+
+        <div class="auth-links" id="auth-links">
             <p>You need to be logged in to play!</p>
-            <button id="play-btn" class="btn">Play Now</button>
-<!--    game 2-->
-         <h3>Tic Tac Toe</h3>
-        <div class="game-container">
-            <p>You need to be logged in to play!</p>
-            <button id="play-btn2" class="btn">Play Now</button>
-            <div class="auth-links">
-                <a href="login.html">Login</a> | 
-                <a href="signup.html">Sign Up</a>
+            <div class="auth-buttons">
+                <a href="login.html" class="btn btn-outline"><i class="fas fa-sign-in-alt"></i> Login</a>
+                <a href="signup.html" class="btn"><i class="fas fa-user-plus"></i> Sign Up</a>
             </div>
         </div>
     </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 GameHub. All rights reserved.</p>
+        </div>
+    </footer>
+
     <script src="auth.js"></script>
     <script>
-        document.getElementById('play-btn').addEventListener('click', function() {
-            if (localStorage.getItem('currentUser')) {
-                window.location.href = 'game.html';
-            } else {
-                window.location.href = 'login.html';
-            }
-        });
-    </script>
-        <script>
-        document.getElementById('play-btn2').addEventListener('click', function() {
-            if (localStorage.getItem('currentUser')) {
-                window.location.href = 'game2.html';
-            } else {
-                window.location.href = 'login.html';
-            }
-        });
-    </script>
-    <script>
-        // Store intended page when play buttons are clicked
-document.getElementById('play-btn')?.addEventListener('click', () => {
-  localStorage.setItem('redirectAfterLogin', 'game.html');
-  const isLoggedIn = !!localStorage.getItem('currentUser');
-  window.location.href = isLoggedIn ? 'game.html' : 'login.html';
-});
+        // Check auth status and update UI
+        function updateAuthUI() {
+            const isLoggedIn = !!localStorage.getItem('currentUser');
+            document.getElementById('auth-links').style.display = isLoggedIn ? 'none' : 'block';
+            document.querySelector('.nav-links').style.display = isLoggedIn ? 'flex' : 'none';
+        }
 
-document.getElementById('play-btn2')?.addEventListener('click', () => {
-  localStorage.setItem('redirectAfterLogin', 'game2.html');
-  const isLoggedIn = !!localStorage.getItem('currentUser');
-  window.location.href = isLoggedIn ? 'game2.html' : 'login.html';
-});
+        // Initialize auth UI
+        document.addEventListener('DOMContentLoaded', function() {
+            updateAuthUI();
+            
+            // Profile link
+            document.getElementById('profile-link')?.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (localStorage.getItem('currentUser')) {
+                    window.location.href = 'profile.html';
+                } else {
+                    window.location.href = 'login.html';
+                }
+            });
 
+            // Logout link
+            document.getElementById('logout-link')?.addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('currentUser');
+                updateAuthUI();
+                window.location.href = 'index.html';
+            });
+        });
+
+        // Play buttons
+        document.getElementById('play-btn')?.addEventListener('click', () => {
+            localStorage.setItem('redirectAfterLogin', 'game.html');
+            const isLoggedIn = !!localStorage.getItem('currentUser');
+            window.location.href = isLoggedIn ? 'game.html' : 'login.html';
+        });
+
+        document.getElementById('play-btn2')?.addEventListener('click', () => {
+            localStorage.setItem('redirectAfterLogin', 'game2.html');
+            const isLoggedIn = !!localStorage.getItem('currentUser');
+            window.location.href = isLoggedIn ? 'game2.html' : 'login.html';
+        });
     </script>
 </body>
 </html>
